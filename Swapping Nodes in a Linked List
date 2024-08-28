@@ -1,0 +1,70 @@
+'''
+You are given the head of a linked list, and an integer k.
+
+Return the head of the linked list after swapping the values of the kth node from the beginning and the kth node from the end (the list is 1-indexed).
+ 
+
+EXAMPLE(S)
+Input: head = [1,2,3,4,5], k = 2
+                       f
+                     l
+Output: [1,4,3,2,5]
+
+Input: head = [7,9,6,6,7,8,3,0,9,5], k = 5
+Output: [7,9,6,6,8,7,3,0,9,5]
+ 
+
+FUNCTION SIGNATURE
+def swapNodes(self, head: ListNode, k: int) -> ListNode:
+'''
+class ListNode:
+    def __init__(self, val, next = None):
+        self.val = val
+        self.next = next 
+
+def swapNodes(head: ListNode, k: int) -> ListNode:
+    if not head:
+        return None
+
+    fast = head
+    slow = head
+
+    #get front k val
+    for i in range(k-1):
+        fast = fast.next
+
+    front = fast
+
+    #get back
+    while fast.next:
+        fast = fast.next
+        slow = slow.next
+
+    #swap values of the nodes
+    temp = front.val
+    front.val = slow.val
+    slow.val = temp
+
+    return head
+
+#Test ##################################################################
+# [1,4,3,2,5] k = 2
+LL1 = ListNode(1, ListNode(4, ListNode(3, ListNode(2, ListNode(5)))))
+#[7,9,6,6,7,8,3,0,9,5] k = 5
+LL2 = ListNode(7, ListNode(9, ListNode(6, ListNode(6,ListNode(7, ListNode(8,ListNode(3, ListNode(0, ListNode(9, ListNode(5))))))))))
+LL3 = ListNode(1)
+
+def arrayify(head):
+    arr = []
+    curr = head
+    while curr:
+        arr.append(curr.val)
+        curr = curr.next
+    return arr
+
+print(arrayify(swapNodes(LL1, 2)))
+print(arrayify(swapNodes(LL2, 5)))
+print(arrayify(swapNodes(LL3, 1)))
+
+
+
