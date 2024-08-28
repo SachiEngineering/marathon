@@ -1,0 +1,80 @@
+'''
+We're going to build the data model for a text editor that supports the basic operations needed for typing. This data model will take the form of a class that has methods for:
+- typing one character at a time
+- backspace and delete to remove text one character at a time
+- moving the cursor
+
+'''
+
+class Node:
+    def __init__(self, value=None, next=None, prev=None):
+        self.value = value
+        self.next = next
+        self.prev = prev
+
+class TextEditor:
+    def __init__(self, initial_text=""):
+        self.start = Node(None)  
+        self.end = Node(None, None, self.start)  
+        self.start.next = self.end  
+        self.cursor = self.end 
+
+        #initial text
+        for char in initial_text:
+            self.add_char(char)  
+
+    # Add a new character before the cursor
+    def add_char(self, c):
+        new_char = Node(c, self.cursor, self.cursor.prev)  
+        self.cursor.prev.next = new_char 
+        self.cursor.prev = new_char  
+        return self  
+
+    # Remove the character before the cursor
+    def backspace(self):
+        if self.cursor.prev is not self.start:  
+            remove = self.cursor.prev
+            remove.prev.next = self.cursor  
+            self.cursor.prev = remove.prev  
+        return self 
+
+    # Remove the character at the cursor
+    def delete(self):
+        if self.cursor != self.end:  
+            self.cursor.prev.next = self.cursor.next  
+            self.cursor.next.prev = self.cursor.prev  
+            self.cursor = self.cursor.next  
+        return self 
+
+    # Move the cursor back
+    def move_back(self):
+        if self.cursor.prev is not self.start: 
+            self.cursor = self.cursor.prev  
+        return self  
+
+    # Move the cursor forward 
+    def move_next(self):
+        if self.cursor.next is not None: 
+            self.cursor = self.cursor.next 
+        return self  
+
+    # Move the cursor to the start
+    def move_start(self):
+        self.cursor = self.start.next 
+        return self  
+
+    # Move the cursor to the end.
+    def move_end(self):
+        self.cursor = self.end  
+        return self 
+
+    # Return the text currently in the editor as a single string.
+    def to_string(self):
+        curr = self.start.next 
+        chars = []  
+        while curr != self.end:  
+            chars.append(curr.value) 
+            curr = curr.next  
+        return ''.join(chars)  
+
+
