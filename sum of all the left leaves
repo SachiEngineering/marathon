@@ -19,24 +19,6 @@ def sumOfLeftLeaves(root: Optional[TreeNode]) -> int:
 Brainstorming:
 no tree -> return 0
 
-Planning:
-separate function:
-if a node doesn't have any children: then it's a leaf
-
-recursive function:
-run the no child check on the left node to see if left leaf
-
-base case:
--if no root: return 0
-
-init sum = 0
-#if the left child and if the left child is a leaf:
-  add to the sum
-
-#run this on both left and right 
-
-
-#return total sum
 
 Time: O(n) n is the number of nodes in the tree
 space: O(h) h is the height of tree
@@ -48,36 +30,17 @@ class TreeNode:
     self.left = left
     self.right = right
 
-# separate function:
-# if a node doesn't have any children: then it's a leaf
-def checkLeaf(node):
-  if not node.left and not node.right:
-    return True
-  return False
-
-def sumOfLeftLeaves(root: [TreeNode]) -> int:
-
-  # recursive function:
-  # run the no child check on the left node to see if left leaf
-
-  # base case:
-  # -if no root: return 0
-  if not root:
-    return 0
-
-  # init sum = 0
-  leftSum = 0
-
-  # #if the left child and if the left child is a leaf:
-  if root.left and checkLeaf(root.left):
-    leftSum += root.left.value
-
-  # #run this on both left and right: adds to the recursive stack
-  leftSum += sumOfLeftLeaves(root.left)
-  leftSum += sumOfLeftLeaves(root.right)
-
-  #return
-  return leftSum
+def sumOfLeftLeaves(root) -> int:
+    if not root:
+        return 0
+    res = 0
+    if root.left:
+        if not root.left.left and not root.left.right:
+            res += root.left.value
+        else:
+            res += sumOfLeftLeaves(root.left)
+    res += sumOfLeftLeaves(root.right)
+    return res
 
 #Verify
 '''
@@ -103,21 +66,11 @@ trial = TreeNode(3, None, TreeNode(5))
 print(sumOfLeftLeaves(trial)) #0
 
 
-'''
-def sumOfLeftLeaves(root: Optional[TreeNode]) -> int:
-    if not root:
-        return 0
-    res = 0
-    if root.left:
-        if not root.left.left and not root.left.right:
-            res += root.left.val
-        else:
-            res += sumOfLeftLeaves(root.left)
-    res += sumOfLeftLeaves(root.right)
-    return res
+
+
 
     
-'''
+
 
 
 
