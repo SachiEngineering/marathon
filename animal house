@@ -1,0 +1,129 @@
+'''
+We're going to create a class 'AnimalHouse' with the following functions: 
+* addCat() / adoptCat()
+* addDog() / adoptDog()
+* adoptAnimal()
+
+In this Animal House, cats and dogs are added to the house. When *adoptCat()* or *adoptDog() is called, you return the cat or dog that has been in the house for the longest amount of time. *adoptAnimal()* gets either the cat or dog that has been there the longest.
+ 
+
+EXAMPLE(S)
+house = AnimalHouse()
+house.addCat("Sweet Tea")
+house.adoptCat() == "Sweet Tea"
+house.addDog("Oliver")
+house.addCat("Moose")
+house.adoptDog() == "Oliver"
+house.adoptDog() == "There are no dogs left to adopt"
+house.adoptCat() == "Moose"
+house.adoptCat() == "There are no cats left to adopt"
+house.adoptAnimal() == "There are no animals left to adopt"
+
+# Python
+class AnimalHouse:
+  def __init__(self):
+    pass
+
+  def addCat(self, cat: str) -> None:
+    pass
+
+  def addDog(self, dog: str) -> None:
+    pass
+
+  def adoptCat(self) -> str:
+    return "There are no cats left to adopt"
+
+  def adoptDog(self) -> str:
+    return "There are no dogs left to adopt"
+
+  def adoptAnimal(self) -> str:
+    return "There are no animals left to adopt"
+
+#explore
+#we were going to have different animals? no
+#the oldest animal to be returned wehn you get adopt animal
+
+#list to store each of the dogs and cats, animal list
+
+
+'''
+from collections import deque
+
+class AnimalHouse:
+  def __init__(self):
+    #list to store each of the dogs and cats, animal list
+    self.dogs = deque()
+    self.cats = deque()
+    #self.allAnimals = deque()
+    self.counter = 0
+
+  def addCat(self, cat: str) -> None:
+    self.cats.append((cat, self.counter)) #appends the name of the cat to list
+    self.counter += 1
+    #self.allAnimals.append(cat)
+
+  def addDog(self, dog: str) -> None:
+    self.dogs.append((dog, self.counter))
+    self.counter+= 1
+   # self.allAnimals.append(dog)
+
+  def adoptCat(self) -> str:
+    if not self.cats:
+      return "There are no cats left to adopt"
+    else:
+      thisCat, counter = self.cats.popleft() #pop left the oldest cat
+
+      # #remove thisCat from the all animals list
+      # newAnimals = []
+      # for animal in self.allAnimals:
+      #   if animal is not thisCat:
+      #     newAnimals.append(animal)
+
+      # self.allAnimals = newAnimals #replace list with animal list with the adopted cat removed
+
+      return thisCat
+
+  def adoptDog(self) -> str:
+    if not self.dogs:
+      return "There are no dogs left to adopt"
+    else:
+      thisDog, counter = self.dogs.popleft() #pop left the oldest cat
+
+      # #remove thisDog from the all animals list
+      # newAnimals = []
+      # for animal in self.allAnimals:
+      #   if animal is not thisDog:
+      #     newAnimals.append(animal)
+
+      # self.allAnimals = newAnimals #replace list with animal list with the adopted cat removed
+
+      return thisDog
+
+  def adoptAnimal(self) -> str:
+    if not self.cats and not self.dogs:
+      return "There are no animals left to adopt"
+
+    #if there are no cats but there are dogs:
+    if not self.cats:
+      return self.adoptDog()
+    #vice versa
+    if not self.dogs:
+      return self.adoptCat()
+
+    #compare the counter values return oldest animal
+    if self.cats[0][1] < self.dogs[0][1]:
+      return self.adoptCat()
+    else:
+      return self.adoptDog()
+
+house = AnimalHouse()
+house.addCat("Sweet Tea")
+print(house.adoptCat() == "Sweet Tea")
+house.addDog("Oliver")
+house.addCat("Moose")
+print(house.adoptDog() == "Oliver")
+print(house.adoptDog() == "There are no dogs left to adopt")
+print(house.adoptCat() == "Moose")
+print(house.adoptCat() == "There are no cats left to adopt")
+print(house.adoptAnimal() == "There are no animals left to adopt")
+
