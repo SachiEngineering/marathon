@@ -1,0 +1,113 @@
+"""
+Given an array of at least 5 unique and non zero integers. Write a function that calculates the maximum product of any 3 elements of the array
+
+Time: O(nlogn)
+
+explore
+-integers be positive and negative?
+-all pos and all neg? can be a mix
+-3 elements - 
+
+brainstorming:
+-sorting the array in order 
+    -most negative numbers: 2 of these (biggest positive), 1 of the positive 
+    -highest positive numbers (3) - o(nlogn)
+-iterate through the array and collect the numbers o(n)
+
+planning
+-1st method
+    -sorting - in asc
+    -get the product of the final 3 (largest) - positive 
+    -the product: the first two smallest (most negative if any) and then the largest - 2 neg and 1 pos 
+    -return the max of those to get the largest
+-2nd method 
+    -different variables to carry all the maximum values and minimum values through the arr
+        max variables - 3 (positive case)
+        minimum variables 2 (2 neg and 1 positive case)
+
+        for each element in the array:
+            #keep track of the largest and smallest
+            comparisions or max function 
+
+        #to calculate the max products
+        max(product of the 3 maxes, product of the 2 neg and 1 positive)
+
+        return after
+
+
+
+    -compare all the possible products and return the largest one 
+
+
+
+
+"""
+
+def maxOfThree(arr):
+    #sort it
+    arr.sort()
+
+    #-get the product of the final 3 (largest) - positive 
+    threeLargest = arr[-1] * arr[-2] * arr[-3]
+
+    # -the product: the first two smallest (most negative if any) and then the largest - 2 neg and 1 pos 
+    mixedProduct = arr[0] *arr[1] * arr[-1]
+
+    # -return the max of those to get the largest
+    return max(threeLargest,mixedProduct)
+
+##testing scenario 1 o(nlogn)
+print(maxOfThree([-1,-2,-3,-4,-5]))  #all negative
+print(maxOfThree([1,2,3,4,5])) #all pos
+print(maxOfThree([-1,-2,-3,4,5])) #mix
+print(maxOfThree([-10,-11,-12,3,4])) #440 
+
+def maxOfThreeScan(arr):
+    # -different variables to carry all the maximum values and minimum values through the arr
+    #     max variables - 3 (positive case)
+    #     minimum variables 2 (2 neg and 1 positive case)
+    max1= float('-inf')
+    max2 = float('-inf')
+    max3 = float('-inf')
+
+    min1 = float('inf')
+    min2 = float('inf')
+
+    #for each element in the array:
+    for element in arr:
+        #see if curr if greater than current max1
+        if element > max1:
+            max1, max2, max3 = element, max1, max2
+            
+        #same for max2
+        elif element > max2:
+            max2, max3 = element, max2
+
+        #same for max3
+        elif element > max3:
+            max3 = element
+
+        #do this for the minimums
+        if element < min1:
+            min1, min2 = element, min1
+        elif element < min2:
+            min2 = element
+
+#     #to calculate the max products
+#     max(product of the 3 maxes, product of the 2 neg and 1 positive)
+    return max(max1*max2*max3, max1*min1*min2)
+
+##testing scenario 2 o(n)
+print(maxOfThreeScan([-1,-2,-3,-4,-5]))  #all negative
+print(maxOfThreeScan([1,2,3,4,5])) #all pos
+print(maxOfThreeScan([-1,-2,-3,4,5])) #mix
+print(maxOfThreeScan([-10,-11,-12,3,4])) #440 
+
+
+
+
+
+
+
+
+
